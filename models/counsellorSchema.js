@@ -37,6 +37,7 @@ const counsellorSchema =new Schema(
       min: 1,
       max: 40,
     },
+      password: { type: String, required: true }, 
   },
   { timestamps: true }
 );

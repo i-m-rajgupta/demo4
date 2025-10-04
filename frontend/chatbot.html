@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mental Health Chatbot</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #89f7fe, #66a6ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .chat-container {
+      background: #ffffffdd;
+      width: 400px;
+      max-width: 90%;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: fadeIn 1s ease;
+    }
+
+    h1 {
+      text-align: center;
+      background: #66a6ff;
+      color: white;
+      margin: 0;
+      padding: 15px;
+      font-size: 1.5em;
+      font-weight: 600;
+    }
+
+    #chat {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #f7f7f7;
+    }
+
+    /* Chat bubbles */
+    .message {
+      max-width: 80%;
+      padding: 10px 15px;
+      border-radius: 20px;
+      animation: pop 0.3s ease;
+    }
+
+    .user {
+      align-self: flex-end;
+      background: #66a6ff;
+      color: white;
+      border-bottom-right-radius: 0;
+    }
+
+    .bot {
+      align-self: flex-start;
+      background: #e0e0e0;
+      color: #333;
+      border-bottom-left-radius: 0;
+    }
+
+    /* Input area */
+    .input-area {
+      display: flex;
+      padding: 10px;
+      background: #fff;
+      border-top: 1px solid #ccc;
+    }
+
+    .input-area input {
+      flex: 1;
+      padding: 10px 15px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    .input-area input:focus {
+      border-color: #66a6ff;
+      box-shadow: 0 0 5px #66a6ff;
+    }
+
+    .input-area button {
+      margin-left: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #66a6ff;
+      color: white;
+      font-weight: 600;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .input-area button:hover {
+      background: #89f7fe;
+      color: #333;
+    }
+
+    /* Scrollbar styling */
+    #chat::-webkit-scrollbar {
+      width: 6px;
+    }
+    #chat::-webkit-scrollbar-thumb {
+      background-color: #66a6ff;
+      border-radius: 3px;
+    }
+
+    /* Animations */
+    @keyframes pop {
+      0% { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <h1>Mental Health Chatbot</h1>
+    <div id="chat"></div>
+    <div class="input-area">
+      <input type="text" id="userInput" placeholder="Type your message..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const chatDiv = document.getElementById("chat");
+      const message = input.value.trim();
+      if (!message) return;
+
+      // Add user message
+      const userBubble = document.createElement("div");
+      userBubble.classList.add("message", "user");
+      userBubble.textContent = message;
+      chatDiv.appendChild(userBubble);
+      chatDiv.scrollTop = chatDiv.scrollHeight;
+      input.value = "";
+
+      try {
+        const response = await fetch("/api/chatbot", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message })
+        });
+        const data = await response.json();
+
+        // Add bot message
+        const botBubble = document.createElement("div");
+        botBubble.classList.add("message", "bot");
+        botBubble.textContent = data.reply;
+        chatDiv.appendChild(botBubble);
+        chatDiv.scrollTop = chatDiv.scrollHeight;
+      } catch (err) {
+        const botBubble = document.createElement("div");
+        botBubble.classList.add("message", "bot");
+        botBubble.textContent = "Sorry, something went wrong.";
+        chatDiv.appendChild(botBubble);
+        chatDiv.scrollTop = chatDiv.scrollHeight;
+      }
+    }
+  </script>
+</body>
+</html>

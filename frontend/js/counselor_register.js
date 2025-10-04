@@ -1,59 +1,37 @@
-// Populate experience dropdown dynamically (1 to 40 years)
-const experienceSelect = document.getElementById("experience");
-for (let i = 1; i <= 40; i++) {
-  const option = document.createElement("option");
-  option.value = i;
-  option.textContent = `${i} year${i > 1 ? "s" : ""}`; // ✅ use backticks
-  experienceSelect.appendChild(option);
-}
+const form = document.getElementById("counsellorForm");
 
-// Handle form submission
-document.getElementById("counselorForm").addEventListener("submit",async function (event) {
-  event.preventDefault(); // prevent page reload
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-  const counselorData = {
-    name: document.getElementById("name").value.trim(),
+  const data = {
+    role: "counsellor",
+    name: document.getElementById("name").value,
     dob: document.getElementById("dob").value,
-    email: document.getElementById("email").value.trim(),
-    phone: document.getElementById("phone").value.trim(),
-    qualification: document.getElementById("qualification").value.trim(),
-    experience: document.getElementById("experience").value
+    email: document.getElementById("email").value,
+    phone: document.getElementById("phone").value,
+    qualification: document.getElementById("qualification").value,
+    experience: document.getElementById("experience").value,
+    password: document.getElementById("password").value
   };
 
-  // Simple validation
-  if (
-    !counselorData.name ||
-    !counselorData.email ||
-    !counselorData.phone ||
-    !counselorData.qualification ||
-    !counselorData.experience
-  ) {
-    alert("Please fill in all required fields.");
-    return;
-  }
-
-console.log(counselorData);
   try {
-    // ✅ use await safely inside async function
-    const res = await fetch("/api/counsellor/signup", {
+    const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(counselorData)
+      body: JSON.stringify(data)
     });
 
-    if (res.status == 201) {
-      alert("Counselor registered successfully!");
-      this.reset();
-      window.location.href = "/counsellorDashboard.html";
-    } else {
-      const error = await res.json();
-      alert("Error: " + (error.message || "Failed to register"));
-    }
-  } catch (error) {
-    console.error(error);
-    alert("Something went wrong!");
-  }
+    const result = await res.json();
 
-  // Clear form
-  this.reset();
+    if (result.success) {
+      alert(result.message); // show "Registered successfully. Please login."
+      window.location.href = "/api/login"; // redirect to login page
+    } else {
+      alert(result.error);
+    }
+
+  } catch (err) {
+    console.error("Registration error:", err);
+    alert("Something went wrong. Try again!");
+  }
 });

@@ -1,35 +1,40 @@
-// Section switching
-const buttons = document.querySelectorAll('.nav-btn');
-const sections = document.querySelectorAll('.section');
+// /public/js/counsellorDashboard.js
 
-buttons.forEach((btn) => {
-  btn.addEventListener('click', () => {
-    // Highlight clicked tab
-    buttons.forEach((b) => b.classList.remove('active'));
-    btn.classList.add('active');
+async function authFetch(url, opts = {}) {
+  const token = localStorage.getItem('cw_token');
+  const headers = Object.assign({}, opts.headers || {});
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  const res = await fetch(url, Object.assign({}, opts, { headers }));
+  return res;
+}
 
-    // Show relevant section
-    const sectionId = btn.dataset.section;
-    sections.forEach((sec) => {
-      sec.classList.toggle('active', sec.id === sectionId);
-    });
-  });
-});
+async function bootstrap() {
+  const contentEl = document.getElementById('dashboardContent'); // create a container in HTML
+  try {
+    const res = await authFetch('/api/counsellor/me');
+    if (res.status === 401 || res.status === 403) {
+      // token missing/invalid - redirect to login
+      window.location.href = '/login.html'; // your login route
+      return;
+    }
+    if (!res.ok) {
+      const body = await res.json().catch(()=>({}));
+      contentEl.innerHTML = `<p>Error: ${body.error || 'Unable to load data'}</p>`;
+      return;
+    }
+    const body = await res.json();
+    const c = body.counsellor;
+    // Render counsellor info into page
+    contentEl.innerHTML = `
+      <h2>Welcome, ${c.name}</h2>
+      <p><strong>Username:</strong> ${c.username}</p>
+      <p><strong>Email:</strong> ${c.email}</p>
+      <p><strong>Experience:</strong> ${c.experience || 'N/A'} years</p>
+    `;
+  } catch (err) {
+    console.error(err);
+    contentEl.innerHTML = '<p>Network error - try again later</p>';
+  }
+}
 
-// Sign out dropdown
-const userIcon = document.getElementById('userIcon');
-const signoutMenu = document.getElementById('signoutMenu');
-
-userIcon.addEventListener('click', (e) => {
-  e.stopPropagation();
-  signoutMenu.style.display = signoutMenu.style.display === 'block' ? 'none' : 'block';
-});
-
-document.addEventListener('click', () => {
-  signoutMenu.style.display = 'none';
-});
-
-document.getElementById('signoutBtn').addEventListener('click', () => {
-  alert('You have signed out successfully.');
-  // You could redirect to login page if needed
-});
+document.addEventListener('DOMContentLoaded', bootstrap);

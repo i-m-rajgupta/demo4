@@ -1,9 +1,9 @@
 // db.js or mongoose.js
 const mongoose = require('mongoose');
 
-const connectDB = async () => {
+const connectDB = async (url) => {
   try {
-    await mongoose.connect('mongodb+srv://Mental_Health:rajritika@cluster0.rmeaamz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+    await mongoose.connect(url, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

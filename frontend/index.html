@@ -21,20 +21,22 @@
       </nav>
     </div>
 
-    
     <div class="nav-right">
       <div class="search">
         <input type="search" id="search" placeholder="Search..." />
       </div>
-      <div class="profile" id="profileBtn" tabindex="0" role="button" aria-pressed="false">
-         <a href="/api/role">
-        <img src="./unknown.jpg" alt="user" />
-        <div class="profile-menu" id="profileMenu">
+
+      <!-- Profile / Login area -->
+      <div class="profile-area">
+        <!-- Will be replaced by JS with either Login button or user info -->
+     <a href="/api/login">  <button id="loginBtn" class="btn small">Login</button></a>
+          <span id="usernameLabel"></span>
+          <button id="logoutBtn" class="btn small">Logout</button>
         </div>
-          </a>
       </div>
     </div>
   </header>
+
 
   <!-- MAIN CONTENT -->
   <main class="main-container">
@@ -64,7 +66,8 @@
 
       <div class="actions">
         <a href="/api/counsellor/new"> <button class="btn register advisor">Register as Advisor</button></a>
-          <a href="/api/user/new"><button class="btn register user">Register as User</button></a>
+        <a href="/api/user/new"><button class="btn register user">Register as User</button></a>
+        <a href="/api/chatbot"><button class="btn register chatbot">Chatbot</button></a>
 
         <div class="panic-wrap">
           <button id="panicBtn" title="Panic Button" aria-label="Panic Button" class="panic-btn">!</button>
@@ -76,20 +79,13 @@
     <section class="counsellors">
       <h2>Meet some counsellors</h2>
       <div class="slider" id="slider">
-        <!-- six cards - swap placeholder images with real photos later -->
+        <!-- slides as before -->
         <div class="slide">
           <img src="./img1.jpg" alt="Esther Perel" />
           <h4>Esther Perel</h4>
           <p class="qual">MA in expressive art therapy; couples & family therapist.</p>
         </div>
-
-        <div class="slide">
-          <img src="./img2.jpg" alt="John Gottman" />
-          <h4>John Gottman, PhD</h4>
-          <p class="qual">PhD in Clinical Psychology; relationship researcher and therapist.</p>
-        </div>
-
-        <div class="slide">
+           <div class="slide">
           <img src="./img4.jpg" alt="Marsha Linehan" />
           <h4>Marsha M. Linehan, PhD</h4>
           <p class="qual">PhD in Social & Experimental Personality Psychology; creator of DBT.</p>
@@ -112,6 +108,13 @@
           <h4>Aaron T. Beck, MD</h4>
           <p class="qual">MD — founder of cognitive therapy (CBT), psychiatry professor.</p>
         </div>
+ <div class="slide">
+          <img src="./img2.jpg" alt="John Gottman" />
+          <h4>John Gottman, PhD</h4>
+          <p class="qual">PhD in Clinical Psychology; relationship researcher and therapist.</p>
+        </div>
+
+        <!-- other slides... -->
       </div>
 
       <div class="slider-controls">
@@ -124,8 +127,7 @@
   <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-links">
-      <button class="footer-btn">T &amp; C</button>
-      <button class="footer-btn">Contact us</button>
+    <a href="/api/termsandpolicy">  <button class="footer-btn">T &amp; C</button></a>
     </div>
     <div class="footer-info">
       <span>Mobile: +1 (555) 123-4567</span>

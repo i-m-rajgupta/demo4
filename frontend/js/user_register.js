@@ -1,40 +1,42 @@
-// Handle form submission
-document.getElementById('userForm').addEventListener('submit',async function (event) {
-  event.preventDefault(); // Prevent page refresh
+const form = document.getElementById("userForm");
+const submitBtn = document.getElementById("submitBtn");
 
-  // Collect user input values
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
   const userData = {
-    name: document.getElementById('name').value.trim(),
-    dob: document.getElementById('dob').value,
-    email: document.getElementById('email').value.trim(),
-    phone: document.getElementById('phone').value.trim(),
-    place: document.getElementById('place').value.trim()
+    role: "user",
+    name: document.getElementById("name").value.trim(),
+    dob: document.getElementById("dob").value,
+    email: document.getElementById("email").value.trim(),
+    phone: document.getElementById("phone").value.trim(),
+    place: document.getElementById("place").value.trim(),
+    password: document.getElementById("password")?.value || "default123" // optional password field
   };
 
-  // Simple validation check
-  if (!userData.name || !userData.email || !userData.phone || !userData.place) {
-    alert('Please fill in all required fields.');
-    return;
-  }
-console.log(userData);
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Registering...";
+
   try {
-    // ✅ use await safely inside async function
-    const res = await fetch("/api/user/signup", {
+    const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData)
     });
 
-    if (res.status == 201) {
-      alert("Counselor registered successfully!");
-      this.reset();
-      window.location.href = "/userDashboard.html";
+    const body = await res.json();
+
+    if (body.success) {
+      alert(body.message);
+      window.location.href = "/api/login"; // redirect to login page
     } else {
-      const error = await res.json();
-      alert("Error: " + (error.message || "Failed to register"));
+      alert(body.error || "Failed to register");
     }
-  } catch (error) {
-    console.error(error);
-    alert("Something went wrong!");
+  } catch (err) {
+    console.error(err);
+    alert("Network error. Please try again.");
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit";
   }
 });
