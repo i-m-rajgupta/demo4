@@ -1,0 +1,74 @@
+/* Reset + Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+  background-color: #f8f6ef;  /* light beige/cream background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Registration box */
+.form-container {
+  background: #ffffff;
+  border: 2px solid #000; /* black border */
+  border-radius: 10px;
+  padding: 30px 40px;
+  width: 350px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Inputs */
+form label {
+  display: block;
+  font-weight: 600;
+  margin-top: 12px;
+  margin-bottom: 4px;
+  color: #222;
+}
+
+form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #777;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  background-color: #f9f9f9;
+}
+
+form input:focus {
+  outline: none;
+  border-color: #1e7a3a;
+  background-color: #fff;
+}
+
+/* Submit button */
+#submitBtn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 18px;
+  background-color: #1e7a3a; /* green */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+#submitBtn:hover {
+  background-color: #4cc763; /* light green */
+}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard</title>
+  <link rel="stylesheet" href="/css/user_dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Animated background -->
+  <div class="animated-bg"></div>
+
+  <!-- Navigation bar -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <div class="logo">🧘‍♂</div>
+      <span class="brand">User Dashboard</span>
+    </div>
+    <div class="nav-links">
+      <button class="nav-btn" data-section="profile">Profile</button>
+      <button class="nav-btn" data-section="recentchats">Recent Chats</button>
+      <button class="nav-btn" data-section="appointments">Appointments</button>
+      <button class="nav-btn" data-section="analysis">Analysis</button>
+      <button class="nav-btn" data-section="test">Tests</button>
+    </div>
+    <div class="nav-right">
+      <div class="user-icon" id="userIcon">👤</div>
+      <div class="signout-menu" id="signoutMenu">
+        <button id="signoutBtn">Sign Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Content area -->
+  <main class="content">
+    <!-- Profile -->
+    <div id="profile" class="section active">
+      <h2>Profile / Medical History</h2>
+      <div class="box">
+        <p><strong>Name:</strong> John Doe</p>
+        <p><strong>Age:</strong> 25</p>
+        <p><strong>Medical History:</strong> Anxiety, Mild Depression, Insomnia</p>
+        <p><strong>Medication:</strong> None</p>
+      </div>
+    </div>
+
+    <!-- Recent Chats -->
+    <div id="recentchats" class="section">
+      <h2>Recent Chats</h2>
+      <div class="list">
+        <div class="list-item alt"><strong>Dr. Jane Doe</strong> — 10:30 AM</div>
+        <div class="list-item"><strong>Dr. Smith</strong> — 9:15 AM</div>
+        <div class="list-item alt"><strong>Alex Counselor</strong> — Yesterday 6:00 PM</div>
+      </div>
+    </div>
+
+    <!-- Appointments -->
+    <div id="appointments" class="section">
+      <h2>Appointments</h2>
+      <div class="list">
+        <div class="list-item alt">3 Oct — Dr. Jane Doe — 4:00 PM</div>
+        <div class="list-item">4 Oct — Dr. Smith — 11:30 AM</div>
+        <div class="list-item alt">5 Oct — Alex Counselor — 6:00 PM</div>
+      </div>
+    </div>
+
+    <!-- Analysis -->
+    <div id="analysis" class="section">
+      <h2>Analysis of Sessions & Tests</h2>
+      <div class="list">
+        <div class="list-item alt">Session 1 — Anxiety Level: Moderate — Score: 70%</div>
+        <div class="list-item">Session 2 — Mood Improvement: Mild — Score: 80%</div>
+      </div>
+      <canvas id="attendanceChart" style="margin-top:20px; background:#111; border-radius:8px; padding:10px;"></canvas>
+    </div>
+
+    <!-- Test -->
+    <div id="test" class="section">
+      <h2>Upcoming Weekly Tests</h2>
+      <div class="list">
+        <div class="list-item alt">7 Oct — Mood Tracker Test</div>
+        <div class="list-item">8 Oct — Sleep Pattern Test</div>
+        <div class="list-item alt">9 Oct — Stress Assessment</div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/user_dashboard.js"></script>
+</body>
+</html>

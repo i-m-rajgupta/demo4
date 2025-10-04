@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CalmWell — Mental Health</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <!-- animated background layers -->
+  <div class="bg-animation"></div>
+  <div class="bg-overlay"></div>
+
+  <!-- NAVIGATION -->
+  <header class="navbar">
+    <div class="nav-left">
+      <div class="company-icon">🌿</div>
+      <nav class="nav-links">
+        <a href="/api/about">About</a>
+        <a href="/api/self-analysis">Self Analysis</a>
+      </nav>
+    </div>
+
+    
+    <div class="nav-right">
+      <div class="search">
+        <input type="search" id="search" placeholder="Search..." />
+      </div>
+      <div class="profile" id="profileBtn" tabindex="0" role="button" aria-pressed="false">
+         <a href="/api/role">
+        <img src="./unknown.jpg" alt="user" />
+        <div class="profile-menu" id="profileMenu">
+        </div>
+          </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-container">
+    <section class="company-section">
+      <h1 class="company-name"><em>CalmWell Collective</em></h1>
+      <p class="company-desc">
+        Mental health matters. According to the World Health Organization, nearly 1 in 7 people (about 1.1 billion globally) were living with a mental disorder in 2021. Our goal is to make care accessible, private, and compassionate.
+      </p>
+    </section>
+
+    <!-- FEATURES CARDS -->
+    <section class="features">
+      <div class="cards">
+        <article class="card">
+          <h3>Health Tracker</h3>
+          <p>Monitor moods, sleep and activity to spot patterns and progress.</p>
+        </article>
+        <article class="card">
+          <h3>One-on-one Conversations</h3>
+          <p>Secure, private sessions with licensed professionals.</p>
+        </article>
+        <article class="card">
+          <h3>Mental Test</h3>
+          <p>Quick assessments to help guide next steps and referrals.</p>
+        </article>
+      </div>
+
+      <div class="actions">
+        <a href="/api/counsellor/new"> <button class="btn register advisor">Register as Advisor</button></a>
+          <a href="/api/user/new"><button class="btn register user">Register as User</button></a>
+
+        <div class="panic-wrap">
+          <button id="panicBtn" title="Panic Button" aria-label="Panic Button" class="panic-btn">!</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- COUNSELLORS SLIDER -->
+    <section class="counsellors">
+      <h2>Meet some counsellors</h2>
+      <div class="slider" id="slider">
+        <!-- six cards - swap placeholder images with real photos later -->
+        <div class="slide">
+          <img src="./img1.jpg" alt="Esther Perel" />
+          <h4>Esther Perel</h4>
+          <p class="qual">MA in expressive art therapy; couples & family therapist.</p>
+        </div>
+
+        <div class="slide">
+          <img src="./img2.jpg" alt="John Gottman" />
+          <h4>John Gottman, PhD</h4>
+          <p class="qual">PhD in Clinical Psychology; relationship researcher and therapist.</p>
+        </div>
+
+        <div class="slide">
+          <img src="./img4.jpg" alt="Marsha Linehan" />
+          <h4>Marsha M. Linehan, PhD</h4>
+          <p class="qual">PhD in Social & Experimental Personality Psychology; creator of DBT.</p>
+        </div>
+
+        <div class="slide">
+          <img src="./img5.jpg" alt="Kay Jamison" />
+          <h4>Kay R. Jamison, PhD</h4>
+          <p class="qual">PhD in Clinical Psychology; mood disorders researcher and clinician.</p>
+        </div>
+
+        <div class="slide">
+          <img src="./img6.jpg" alt="Vikram Patel" />
+          <h4>Vikram Patel</h4>
+          <p class="qual">MBBS, MSc, PhD — psychiatrist & global mental-health researcher.</p>
+        </div>
+
+        <div class="slide">
+          <img src="img3.jpg" alt="Aaron T. Beck" />
+          <h4>Aaron T. Beck, MD</h4>
+          <p class="qual">MD — founder of cognitive therapy (CBT), psychiatry professor.</p>
+        </div>
+      </div>
+
+      <div class="slider-controls">
+        <button id="prev">◀</button>
+        <button id="next">▶</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-links">
+      <button class="footer-btn">T &amp; C</button>
+      <button class="footer-btn">Contact us</button>
+    </div>
+    <div class="footer-info">
+      <span>Mobile: +1 (555) 123-4567</span>
+      <span>Govt Helpline (depression): +1 800 273-8255</span>
+    </div>
+  </footer>
+
+  <script src="/js/script.js"></script>
+</body>
+</html>

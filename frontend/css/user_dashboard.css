@@ -1,0 +1,120 @@
+/* Reset & base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+  overflow-x: hidden;
+  color: #fff;
+}
+
+/* Animated background */
+.animated-bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(120deg, #a0d3d3, #f2e8cf, #d1b3c4);
+  background-size: 400% 400%;
+  animation: bgMove 15s ease infinite;
+  z-index: -1;
+}
+
+@keyframes bgMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo { font-size: 1.5rem; }
+.brand { font-weight: bold; }
+
+.nav-links {
+  display: flex;
+  gap: 12px;
+}
+.nav-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 10px;
+  transition: background 0.2s ease;
+  border-radius: 6px;
+}
+.nav-btn:hover,
+.nav-btn.active {
+  background: #4cc763;
+  color: #000;
+}
+
+.nav-right {
+  position: relative;
+}
+.user-icon {
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+.signout-menu {
+  position: absolute;
+  right: 0;
+  top: 35px;
+  background: #fff;
+  color: #000;
+  padding: 8px;
+  border-radius: 6px;
+  display: none;
+}
+.signout-menu button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Content */
+.content {
+  padding: 20px;
+}
+
+.section {
+  display: none;
+}
+.section.active {
+  display: block;
+}
+
+/* Boxes */
+.box, .list-item {
+  background: #000;
+  color: #fff;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+.list-item.alt {
+  background: #1a1a1a;
+}
+
+/* Charts will have black background handled inline */

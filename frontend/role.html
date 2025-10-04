@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Choose Role</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 100px;
+      background-color: #f2f2f2;
+    }
+    h1 {
+      margin-bottom: 40px;
+    }
+    .role-container {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+    }
+    .role {
+      background-color: #fff;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 30px 60px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 18px;
+    }
+    .role:hover {
+      border-color: #007bff;
+      background-color: #e6f0ff;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Please choose your role</h1>
+
+  <div class="role-container">
+    <a href="/api/user/new"><div class="role" >Patient</div></a>
+      <a href="/api/counsellor/new"><div class="role" >Counsellor</div></a>
+  </div>
+
+</body>
+</html>

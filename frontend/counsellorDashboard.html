@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Counselor Dashboard</title>
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+  <!-- Animated background -->
+  <div class="animated-bg"></div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <div class="logo">🧠</div>
+      <span class="brand">Counselor Dashboard</span>
+    </div>
+
+    <div class="nav-links">
+      <button class="nav-btn" data-section="profile">Profile</button>
+      <button class="nav-btn" data-section="recentchats">Recent Chats</button>
+      <button class="nav-btn" data-section="submissions">Submissions</button>
+      <button class="nav-btn" data-section="appointments">Appointments</button>
+      <button class="nav-btn" data-section="feedbacks">Feedbacks</button>
+    </div>
+
+    <div class="nav-right">
+      <div class="user-icon" id="userIcon">👤</div>
+      <div class="signout-menu" id="signoutMenu">
+        <button id="signoutBtn">Sign Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Dynamic content area -->
+  <main class="content">
+    <div id="profile" class="section active">
+      <h2>Profile</h2>
+      <div class="box">
+        <p><strong>Name:</strong> Dr. Jane Doe</p>
+        <p><strong>Email:</strong> janedoe@calmwell.com</p>
+        <p><strong>Qualification:</strong> M.Phil Psychology</p>
+        <p><strong>Experience:</strong> 10 years</p>
+      </div>
+    </div>
+
+    <div id="recentchats" class="section">
+      <h2>Recent Chats</h2>
+      <div class="list">
+        <div class="list-item alt"><strong>Alex Smith</strong> — 10:45 AM</div>
+        <div class="list-item"><strong>Maria Johnson</strong> — 9:10 AM</div>
+        <div class="list-item alt"><strong>Ravi Kumar</strong> — Yesterday 7:30 PM</div>
+        <div class="list-item"><strong>Emma Wilson</strong> — 2 Oct 5:00 PM</div>
+      </div>
+    </div>
+
+    <div id="submissions" class="section">
+      <h2>Submissions (User Reports)</h2>
+      <div class="list">
+        <div class="list-item editable">
+          <strong>Alex Smith:</strong>
+          <textarea>Reported mild anxiety, currently in improvement phase.</textarea>
+        </div>
+        <div class="list-item editable alt">
+          <strong>Maria Johnson:</strong>
+          <textarea>Depression case under medication review.</textarea>
+        </div>
+      </div>
+    </div>
+
+    <div id="appointments" class="section">
+      <h2>Appointments</h2>
+      <div class="list">
+        <div class="list-item alt">3 Oct — Alex Smith — 4:00 PM</div>
+        <div class="list-item">4 Oct — Maria Johnson — 11:30 AM</div>
+        <div class="list-item alt">5 Oct — Ravi Kumar — 6:00 PM</div>
+      </div>
+    </div>
+
+    <div id="feedbacks" class="section">
+      <h2>Recent Feedbacks</h2>
+      <div class="list">
+        <div class="list-item alt">
+          “Dr. Jane was extremely supportive and helped me understand my triggers.” — Alex
+        </div>
+        <div class="list-item">
+          “The session was calm and helpful. Thank you!” — Maria
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>
