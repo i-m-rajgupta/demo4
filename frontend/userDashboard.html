@@ -17,18 +17,18 @@
       <div class="logo">🧘‍♂</div>
       <span class="brand">User Dashboard</span>
     </div>
+
     <div class="nav-links">
-      <button class="nav-btn" data-section="profile">Profile</button>
+      <button class="nav-btn active" data-section="profile">Profile</button>
       <button class="nav-btn" data-section="recentchats">Recent Chats</button>
       <button class="nav-btn" data-section="appointments">Appointments</button>
       <button class="nav-btn" data-section="analysis">Analysis</button>
       <button class="nav-btn" data-section="test">Tests</button>
     </div>
+
     <div class="nav-right">
-      <div class="user-icon" id="userIcon">👤</div>
-      <div class="signout-menu" id="signoutMenu">
-        <button id="signoutBtn">Sign Out</button>
-      </div>
+      <div class="user-icon" id="userIcon" title="Go to profile">👤</div>
+      <!-- signout-menu removed from markup per request -->
     </div>
   </nav>
 
@@ -36,9 +36,9 @@
   <main class="content">
     <!-- Profile -->
     <div id="profile" class="section active">
-      <h2>Profile / Medical History</h2>
+      <h2 id="profileTitle">Profile / Medical History</h2>
       <div class="box">
-        <p><strong>Name:</strong> John Doe</p>
+        <p><strong>Name:</strong> <span id="displayName">John Doe</span></p>
         <p><strong>Age:</strong> 25</p>
         <p><strong>Medical History:</strong> Anxiety, Mild Depression, Insomnia</p>
         <p><strong>Medication:</strong> None</p>
@@ -72,7 +72,11 @@
         <div class="list-item alt">Session 1 — Anxiety Level: Moderate — Score: 70%</div>
         <div class="list-item">Session 2 — Mood Improvement: Mild — Score: 80%</div>
       </div>
-      <canvas id="attendanceChart" style="margin-top:20px; background:#111; border-radius:8px; padding:10px;"></canvas>
+
+      <!-- Chart wrapper: Chart.js will fill the canvas inside -->
+      <div class="chart-wrap" aria-hidden="false">
+        <canvas id="attendanceChart"></canvas>
+      </div>
     </div>
 
     <!-- Test -->

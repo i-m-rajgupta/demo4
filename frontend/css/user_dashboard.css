@@ -9,6 +9,7 @@
 body {
   overflow-x: hidden;
   color: #fff;
+  background: transparent;
 }
 
 /* Animated background */
@@ -46,7 +47,7 @@ body {
   gap: 10px;
 }
 .logo { font-size: 1.5rem; }
-.brand { font-weight: bold; }
+.brand { font-weight: bold; color: #fff; }
 
 .nav-links {
   display: flex;
@@ -59,7 +60,7 @@ body {
   font-weight: 600;
   cursor: pointer;
   padding: 6px 10px;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease;
   border-radius: 6px;
 }
 .nav-btn:hover,
@@ -70,35 +71,26 @@ body {
 
 .nav-right {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 .user-icon {
   font-size: 1.4rem;
   cursor: pointer;
 }
-.signout-menu {
-  position: absolute;
-  right: 0;
-  top: 35px;
-  background: #fff;
-  color: #000;
-  padding: 8px;
-  border-radius: 6px;
-  display: none;
-}
-.signout-menu button {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-}
 
 /* Content */
 .content {
-  padding: 20px;
+  padding: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
+/* Sections */
 .section {
   display: none;
+  margin-bottom: 20px;
 }
 .section.active {
   display: block;
@@ -106,15 +98,74 @@ body {
 
 /* Boxes */
 .box, .list-item {
-  background: #000;
+  background: rgba(0,0,0,0.8);
   color: #fff;
   border-radius: 8px;
   padding: 15px;
   margin-bottom: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
 }
 
 .list-item.alt {
-  background: #1a1a1a;
+  background: rgba(26,26,26,0.9);
 }
 
-/* Charts will have black background handled inline */
+/* Make text readable on bright animated background */
+h2 {
+  margin-bottom: 12px;
+  color: #fff;
+}
+
+/* Chart wrapper & canvas sizing (chart fills the wrapper) */
+.chart-wrap {
+  margin: 20px auto;
+  width: min(720px, 90%);
+  max-width: 720px;
+  height: 320px;
+  max-height: 420px;
+  box-sizing: border-box;
+  padding: 12px;
+  background: #111;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Make the canvas fill the wrapper exactly. Do NOT add padding to the canvas itself. */
+.chart-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  box-sizing: border-box;
+  background: transparent;
+}
+
+@media (max-width: 480px) {
+  .chart-wrap { height: 240px; }
+}
+
+/* Minor spacing fixes for lists in narrow layout */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ensure the profile box content wraps nicely */
+.box p {
+  margin-bottom: 8px;
+  line-height: 1.35;
+  color: #eaeaea;
+}
+
+/* Footer spacing (if added later) */
+.footer {
+  margin-top: 30px;
+  padding: 20px;
+  text-align: center;
+  color: rgba(255,255,255,0.8);
+}

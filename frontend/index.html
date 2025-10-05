@@ -28,10 +28,14 @@
 
       <!-- Profile / Login area -->
       <div class="profile-area">
-        <!-- Will be replaced by JS with either Login button or user info -->
-     <a href="/api/login">  <button id="loginBtn" class="btn small">Login</button></a>
-          <span id="usernameLabel"></span>
-          <button id="logoutBtn" class="btn small">Logout</button>
+        <!-- single auth area: JS will show either loginBtn or userInfo -->
+        <button id="loginBtn" class="btn register small">Login</button>
+
+        <div id="userInfo" style="display:none; align-items:center; gap:8px;">
+          <a id="dashboardLink" href="/api/user/dashboard" class="btn small" style="text-decoration:none; display:inline-flex; align-items:center;">
+            <span id="usernameLabel">You</span>
+          </a>
+          <button id="logoutBtn" class="btn register small">Logout</button>
         </div>
       </div>
     </div>
@@ -85,41 +89,22 @@
           <h4>Esther Perel</h4>
           <p class="qual">MA in expressive art therapy; couples & family therapist.</p>
         </div>
-           <div class="slide">
+        <div class="slide">
           <img src="./img4.jpg" alt="Marsha Linehan" />
           <h4>Marsha M. Linehan, PhD</h4>
           <p class="qual">PhD in Social & Experimental Personality Psychology; creator of DBT.</p>
         </div>
-
         <div class="slide">
           <img src="./img5.jpg" alt="Kay Jamison" />
           <h4>Kay R. Jamison, PhD</h4>
           <p class="qual">PhD in Clinical Psychology; mood disorders researcher and clinician.</p>
         </div>
-
         <div class="slide">
           <img src="./img6.jpg" alt="Vikram Patel" />
           <h4>Vikram Patel</h4>
           <p class="qual">MBBS, MSc, PhD — psychiatrist & global mental-health researcher.</p>
         </div>
-
-        <div class="slide">
-          <img src="img3.jpg" alt="Aaron T. Beck" />
-          <h4>Aaron T. Beck, MD</h4>
-          <p class="qual">MD — founder of cognitive therapy (CBT), psychiatry professor.</p>
-        </div>
- <div class="slide">
-          <img src="./img2.jpg" alt="John Gottman" />
-          <h4>John Gottman, PhD</h4>
-          <p class="qual">PhD in Clinical Psychology; relationship researcher and therapist.</p>
-        </div>
-
         <!-- other slides... -->
-      </div>
-
-      <div class="slider-controls">
-        <button id="prev">◀</button>
-        <button id="next">▶</button>
       </div>
     </section>
   </main>
@@ -127,7 +112,7 @@
   <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-links">
-    <a href="/api/termsandpolicy">  <button class="footer-btn">T &amp; C</button></a>
+      <a href="/api/termsandpolicy">  <button class="footer-btn">T &amp; C</button></a>
     </div>
     <div class="footer-info">
       <span>Mobile: +1 (555) 123-4567</span>

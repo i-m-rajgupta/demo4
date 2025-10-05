@@ -1,76 +1,113 @@
-/* Reset + base styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", Arial, sans-serif;
+/* Counselor register styles - modern, responsive */
+
+/* Reset and base */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html,body { height: 100%; font-family: "Inter", "Segoe UI", Arial, sans-serif; }
+
+/* background with soft animated gradient */
+.page-bg {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(120deg,#d7f7f2 0%,#f6ecd9 40%,#e6d4f0 70%);
+  background-size: 200% 200%;
+  animation: bgShift 14s ease-in-out infinite;
+  z-index: -1;
+  filter: saturate(1.03);
+}
+@keyframes bgShift {
+  0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
 }
 
-body {
-  background-color: #f8f6ef; /* soft light background */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-/* Registration box */
+/* card */
 .form-container {
-  background: #ffffff;
-  border: 2px solid #000; /* black border */
-  border-radius: 10px;
-  padding: 30px 40px;
-  width: 360px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  width: 720px;
+  max-width: calc(100% - 32px);
+  margin: 48px auto;
+  background: rgba(255,255,255,0.94);
+  border-radius: 14px;
+  padding: 26px;
+  box-shadow: 0 20px 60px rgba(9, 30, 45, 0.12);
+  border: 1px solid rgba(10,20,30,0.04);
 }
 
+/* heading */
 .form-container h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
+  font-size: 1.35rem;
+  color: #072033;
+  margin-bottom: 14px;
+  text-align: left;
 }
 
-/* Labels and inputs */
-form label {
-  display: block;
+/* two-column layout for some fields */
+.two-col {
+  display: flex;
+  gap: 12px;
+}
+.field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+.field label {
+  font-size: 0.88rem;
+  color: #114047;
+  margin-bottom: 6px;
   font-weight: 600;
-  margin-top: 12px;
-  margin-bottom: 4px;
-  color: #222;
 }
-
-form input,
-form select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #777;
-  border-radius: 5px;
-  font-size: 0.95rem;
-  background-color: #f9f9f9;
-}
-
-form input:focus,
-form select:focus {
+.field input {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(11,37,64,0.08);
+  background: linear-gradient(180deg, #fff, #fbfbfb);
+  font-size: 0.98rem;
+  color: #072033;
   outline: none;
-  border-color: #1e7a3a;
-  background-color: #fff;
+  transition: box-shadow .15s ease, border-color .12s ease, transform .08s ease;
+}
+.field input:focus {
+  border-color: rgba(76,199,99,0.9);
+  box-shadow: 0 8px 18px rgba(76,199,99,0.06);
+  transform: translateY(-1px);
 }
 
-/* Submit button */
+/* actions row */
+.actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 8px;
+}
 #submitBtn {
-  width: 100%;
-  padding: 10px;
-  margin-top: 18px;
-  background-color: #1e7a3a; /* green */
-  color: white;
+  padding: 12px 16px;
+  border-radius: 10px;
   border: none;
-  border-radius: 6px;
-  font-size: 1rem;
+  background: linear-gradient(90deg,#4cc763 0%, #2ea86b 100%);
+  color: #052225;
+  font-weight: 700;
   cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.2s ease;
+  box-shadow: 0 10px 24px rgba(44,160,88,0.12);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+#submitBtn:hover { transform: translateY(-3px); box-shadow: 0 16px 30px rgba(44,160,88,0.14); }
+.link {
+  margin-left: auto;
+  color: #114047;
+  text-decoration: none;
+  font-weight: 600;
+}
+.link:hover { text-decoration: underline; }
+
+/* message area */
+.form-msg {
+  margin-top: 12px;
+  font-size: 0.95rem;
+  color: #074033;
 }
 
-#submitBtn:hover {
-  background-color: #4cc763; /* light green */
+/* responsive */
+@media (max-width: 720px) {
+  .form-container { padding: 20px; margin: 28px; }
+  .two-col { flex-direction: column; }
+  .link { margin-left: 0; }
 }

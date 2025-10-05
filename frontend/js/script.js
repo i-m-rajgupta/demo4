@@ -1,49 +1,63 @@
-// public/js/script.js
-
-// ---- Modal helpers ----
+// ---- Elements ----
 const loginBtn = document.getElementById('loginBtn');
-const loginModal = document.getElementById('loginModal');
-const closeLogin = document.getElementById('closeLogin');
-const loginForm = document.getElementById('loginForm');
-const loginMsg = document.getElementById('loginMsg');
+const loginModal = document.getElementById('loginModal'); // optional
+const closeLogin = document.getElementById('closeLogin'); // optional
+const loginForm = document.getElementById('loginForm'); // optional
+const loginMsg = document.getElementById('loginMsg'); // optional
 const userInfo = document.getElementById('userInfo');
 const usernameLabel = document.getElementById('usernameLabel');
 const logoutBtn = document.getElementById('logoutBtn');
+const dashboardLink = document.getElementById('dashboardLink');
+const panicBtn = document.getElementById('panicBtn');
+const registerButtons = document.querySelectorAll('.btn.register');
 
-function openLogin() {
-  loginModal.style.display = 'block';
-  loginModal.setAttribute('aria-hidden', 'false');
-  loginMsg.textContent = '';
-  document.getElementById('loginId').focus();
+// ---- Token helpers ----
+function saveToken(token) { localStorage.setItem('cw_token', token); }
+function getToken() { return localStorage.getItem('cw_token'); }
+function clearToken() { localStorage.removeItem('cw_token'); }
+
+function parseJwt(token) {
+  try {
+    const parts = token.split('.');
+    if (parts.length < 2) return null;
+    const payload = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+    const json = decodeURIComponent(atob(payload).split('').map(c => '%' + ('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+    return JSON.parse(json);
+  } catch { return null; }
 }
+
+// ---- Login / Modal behavior ----
+function openLogin() {
+  if (loginModal) {
+    loginModal.style.display = 'block';
+    loginModal.setAttribute('aria-hidden', 'false');
+    if (loginMsg) loginMsg.textContent = '';
+    const idInput = document.getElementById('loginId');
+    if (idInput) idInput.focus();
+  } else {
+    window.location.href = '/api/login';
+  }
+}
+
 function closeLoginModal() {
+  if (!loginModal) return;
   loginModal.style.display = 'none';
   loginModal.setAttribute('aria-hidden', 'true');
-  loginForm.reset();
-  loginMsg.textContent = '';
+  if (loginForm) loginForm.reset();
+  if (loginMsg) loginMsg.textContent = '';
 }
 
-// Event listeners
-if (loginBtn) loginBtn.addEventListener('click', openLogin);
-if (closeLogin) closeLogin.addEventListener('click', closeLoginModal);
-window.addEventListener('click', (e) => {
-  if (e.target === loginModal) closeLoginModal();
-});
-
-// ---- Auth helpers ----
-function saveToken(token) {
-  localStorage.setItem('cw_token', token);
-}
-function getToken() {
-  return localStorage.getItem('cw_token');
-}
-function clearToken() {
-  localStorage.removeItem('cw_token');
+// ---- Auth fetch ----
+async function authFetch(url, opts = {}) {
+  const token = getToken();
+  const headers = Object.assign({}, opts.headers || {});
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  return await fetch(url, Object.assign({}, opts, { headers }));
 }
 
-// Call backend login: POST /api/auth/login
+// ---- Login / Logout ----
 async function login(credentials) {
-  loginMsg.textContent = 'Signing in...';
+  if (loginMsg) { loginMsg.textContent = 'Signing in...'; loginMsg.style.color = ''; }
   try {
     const res = await fetch('/api/auth/login', {
       method: 'POST',
@@ -52,88 +66,108 @@ async function login(credentials) {
     });
     const body = await res.json().catch(() => ({}));
     if (!res.ok) {
-      loginMsg.style.color = '#c53030';
-      loginMsg.textContent = body.error || 'Login failed';
+      if (loginMsg) { loginMsg.style.color = '#c53030'; loginMsg.textContent = body.error || 'Login failed'; }
       return false;
     }
     if (body.token) {
       saveToken(body.token);
-      loginMsg.style.color = '#15803d';
-      loginMsg.textContent = 'Signed in!';
-      updateAuthUI();
-      setTimeout(closeLoginModal, 500);
+      if (loginMsg) { loginMsg.style.color = '#15803d'; loginMsg.textContent = 'Signed in!'; }
+      await updateAuthUI();
+      if (loginModal) setTimeout(closeLoginModal, 500);
       return true;
     } else {
-      loginMsg.style.color = '#c53030';
-      loginMsg.textContent = 'Login failed (no token)';
+      if (loginMsg) { loginMsg.style.color = '#c53030'; loginMsg.textContent = 'Login failed (no token)'; }
       return false;
     }
   } catch (err) {
     console.error('Login error', err);
-    loginMsg.style.color = '#c53030';
-    loginMsg.textContent = 'Network error';
+    if (loginMsg) { loginMsg.style.color = '#c53030'; loginMsg.textContent = 'Network error'; }
     return false;
   }
 }
 
 async function logout() {
   clearToken();
-  updateAuthUI();
-  // Optional: redirect to home
-  // window.location.href = '/';
+  await updateAuthUI();
+  window.location.href = '/api';
 }
 
-// Submit login form
+// ---- Login form submit ----
 if (loginForm) {
-  loginForm.addEventListener('submit', async (e) => {
+  loginForm.addEventListener('submit', async e => {
     e.preventDefault();
     const loginId = document.getElementById('loginId').value.trim();
     const loginPassword = document.getElementById('loginPassword').value;
     if (!loginId || !loginPassword) {
-      loginMsg.style.color = '#c53030';
-      loginMsg.textContent = 'Please enter credentials';
+      if (loginMsg) { loginMsg.style.color = '#c53030'; loginMsg.textContent = 'Please enter credentials'; }
       return;
     }
-    await login({ usernameOrEmail: loginId, password: loginPassword });
+    await login({ email: loginId, password: loginPassword });
   });
 }
 
-// Helper: fetch with Authorization header if token present
-async function authFetch(url, opts = {}) {
-  const token = getToken();
-  const headers = (opts.headers) ? opts.headers : {};
-  if (token) headers['Authorization'] = `Bearer ${token}`;
-  const res = await fetch(url, Object.assign({}, opts, { headers }));
-  return res;
-}
-
-// Update UI based on auth state
+// ---- Update Auth UI ----
 async function updateAuthUI() {
   const token = getToken();
   if (token) {
-    // Optionally fetch user info from server
+    let name = 'You', role = null;
     try {
-      const res = await authFetch('/api/auth/me'); // optional endpoint to get user details
+      const res = await authFetch('/api/auth/me');
       if (res.ok) {
         const body = await res.json().catch(() => ({}));
-        usernameLabel.textContent = body.user?.name || body.user?.username || 'You';
+        if (body.user) { name = body.user.name || body.user.username || body.user.email || name; role = body.user.role || role; }
+        else if (body.counsellor) { name = body.counsellor.name || name; role = 'counsellor'; }
       } else {
-        // if endpoint not present or token invalid, simply show 'You'
-        usernameLabel.textContent = 'You';
+        const payload = parseJwt(token);
+        if (payload) { name = payload.name || payload.email || payload.username || name; role = payload.role || role; }
       }
-    } catch (err) {
-      usernameLabel.textContent = 'You';
+    } catch {
+      const payload = parseJwt(token);
+      if (payload) { name = payload.name || payload.email || payload.username || name; role = payload.role || role; }
     }
-    loginBtn.style.display = 'none';
-    userInfo.style.display = 'inline-flex';
+    if (loginBtn) loginBtn.style.display = 'none';
+    if (userInfo) userInfo.style.display = 'inline-flex';
+    if (usernameLabel) usernameLabel.textContent = name;
+    if (dashboardLink) {
+      dashboardLink.href = role === 'counsellor' ? '/api/counsellor/dashboard' : '/api/user/dashboard';
+    }
   } else {
-    loginBtn.style.display = 'inline-block';
-    userInfo.style.display = 'none';
+    if (loginBtn) loginBtn.style.display = 'inline-block';
+    if (userInfo) userInfo.style.display = 'none';
+    if (usernameLabel) usernameLabel.textContent = '';
+    if (dashboardLink) dashboardLink.href = '/api/user/dashboard';
   }
 }
 
-// wire logout button
-if (logoutBtn) logoutBtn.addEventListener('click', logout);
+// ---- Animate cards, counsellors, and buttons on load ----
+function animateElements() {
+  const items = document.querySelectorAll('.card, .slide, .btn.register, .panic-btn');
+  items.forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(40px)';
+    setTimeout(() => {
+      el.style.transition = 'all 0.8s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 100);
+  });
+}
 
-// Initialize UI
-document.addEventListener('DOMContentLoaded', updateAuthUI);
+// ---- Panic button click ----
+if (panicBtn) {
+  panicBtn.addEventListener('click', () => {
+    alert("Panic button activated! Take deep breaths and call your emergency contact.");
+  });
+}
+
+// ---- Event wiring ----
+if (loginBtn) loginBtn.addEventListener('click', openLogin);
+if (closeLogin) closeLogin.addEventListener('click', closeLoginModal);
+if (logoutBtn) logoutBtn.addEventListener('click', logout);
+window.addEventListener('click', e => { if (loginModal && e.target === loginModal) closeLoginModal(); });
+
+// ---- Initialize ----
+document.addEventListener('DOMContentLoaded', () => {
+  updateAuthUI();
+  animateElements();
+});

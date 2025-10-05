@@ -1,43 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Counsellor Registration</title>
-  <link rel="stylesheet" href="/css/counselor_register.css">
+  <link rel="stylesheet" href="/css/counselor_register.css" />
 </head>
 <body>
-  <div class="form-container">
+  <div class="page-bg"></div>
+
+  <main class="form-container">
     <h2>Counsellor Registration</h2>
 
-    <form id="counsellorForm">
-      <label for="name">Full Name</label>
-      <input type="text" id="name" placeholder="Enter your full name" required>
+    <form id="counsellorForm" autocomplete="on" novalidate>
+      <div class="two-col">
+        <div class="field">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" placeholder="Enter your full name" required />
+        </div>
 
-      <label for="dob">Date of Birth</label>
-      <input type="date" id="dob" required>
+        <div class="field">
+          <label for="dob">Date of Birth</label>
+          <input type="date" id="dob" required />
+        </div>
+      </div>
 
-      <label for="email">Email ID</label>
-      <input type="email" id="email" placeholder="Enter your email" required>
+      <div class="field">
+        <label for="email">Email ID</label>
+        <input type="email" id="email" placeholder="you@example.com" required />
+      </div>
 
-      <label for="phone">Phone Number</label>
-      <input type="tel" id="phone" placeholder="Enter your phone number" required>
+      <div class="field">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" placeholder="+91 98765 43210" required />
+      </div>
 
-      <label for="qualification">Qualification</label>
-      <input type="text" id="qualification" placeholder="Enter your qualification" required>
+      <div class="field">
+        <label for="qualification">Qualification</label>
+        <input type="text" id="qualification" placeholder="e.g. M.Phil Psychology" required />
+      </div>
 
-      <label for="experience">Experience (years)</label>
-      <input type="number" id="experience" min="1" max="40" required>
+      <div class="two-col">
+        <div class="field">
+          <label for="experience">Experience (years)</label>
+          <input type="number" id="experience" min="0" max="60" placeholder="5" required />
+        </div>
 
-      <label for="password">Password</label>
-      <input type="password" id="password" placeholder="Enter your password" required>
+        <div class="field">
+          <label for="place">City / Location</label>
+          <input type="text" id="place" placeholder="Mumbai" />
+        </div>
+      </div>
 
-      <button type="submit" id="submitBtn">Submit</button>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Choose a secure password" required />
+      </div>
+
+      <div class="actions">
+        <button type="submit" id="submitBtn">Create account</button>
+        <a class="link" href="/api/login">Already registered? Login</a>
+      </div>
+
+      <div id="formMsg" role="status" aria-live="polite" class="form-msg"></div>
     </form>
+  </main>
 
-    <p>Already registered? <a href="/api/login">Login here</a></p>
-  </div>
-
-  <script src="/js/counsellor_register.js"></script>
+  <script src="/js/counselor_register.js"></script>
 </body>
 </html>
