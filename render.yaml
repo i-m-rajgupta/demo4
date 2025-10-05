@@ -2,21 +2,8 @@ services:
   - type: web
     name: mental-health-app
     runtime: node
-    repo: https://github.com/YOUR_USERNAME/YOUR_REPO_NAME
+    repo: https://github.com/i-m-rajgupta/demo4
     branch: main
     buildCommand: npm install
     startCommand: node index.js
-    envVars:
-      - key: NODE_VERSION
-        value: 18
-      - key: PORT
-        value: 8080
-      - key: MONGO_URL
-        value: your-mongodb-connection-string-here
-      - key: JWT_SECRET
-        value: your_jwt_secret_here
-      - key: JWT_EXPIRES_IN
-        value: 7d
-      - key: WOLFRAM_CLOUD_URL
-        value: optional_wolfram_endpoint
     autoDeploy: true
