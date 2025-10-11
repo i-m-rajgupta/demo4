@@ -5,5 +5,5 @@ services:
     repo: https://github.com/i-m-rajgupta/demo4
     branch: main
     buildCommand: npm install
-    startCommand: node index.js
+    startCommand: npm start
     autoDeploy: true
