@@ -1,19 +1,44 @@
-const form = document.getElementById("userForm");
+// /public/js/counsellor_register.js
+const form = document.getElementById("counsellorForm");
 const submitBtn = document.getElementById("submitBtn");
+const formMsg = document.getElementById("formMsg");
+
+function setMsg(text, opts = {}) {
+  formMsg.textContent = text || "";
+  formMsg.style.color = opts.error ? "#c53030" : "#0b6b3a";
+}
+
+// Basic frontend validation helper
+function validEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+function validPhone(phone) {
+  // allow digits, spaces, + and - and min 7 digits
+  return /[0-9]/.test(phone) && phone.replace(/\D/g, "").length >= 7;
+}
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  setMsg("");
 
-  const userData = {
+  const data = {
     role: "user",
     name: document.getElementById("name").value.trim(),
     dob: document.getElementById("dob").value,
-    email: document.getElementById("email").value.trim(),
+    email: document.getElementById("email").value.trim().toLowerCase(),
     phone: document.getElementById("phone").value.trim(),
     place: document.getElementById("place").value.trim(),
-    password: document.getElementById("password")?.value || "default123" // optional password field
+    password: document.getElementById("password").value
   };
 
+  // Frontend checks
+  if (!data.name) return setMsg("Please enter your name.", { error: true });
+  if (!data.dob) return setMsg("Please enter your date of birth.", { error: true });
+  if (!validEmail(data.email)) return setMsg("Please enter a valid email.", { error: true });
+  if (!validPhone(data.phone)) return setMsg("Please enter a valid phone number.", { error: true });
+  if (!data.password || data.password.length < 6) return setMsg("Password must be at least 6 characters.", { error: true });
+
+  // disable UI while request in progress
   submitBtn.disabled = true;
   submitBtn.textContent = "Registering...";
 
@@ -21,22 +46,23 @@ form.addEventListener("submit", async (e) => {
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(userData)
+      body: JSON.stringify(data)
     });
+    const result = await res.json().catch(()=>({}));
 
-    const body = await res.json();
-
-    if (body.success) {
-      alert(body.message);
-      window.location.href = "/api/login"; // redirect to login page
+    if (res.ok && result.success) {
+      setMsg(result.message || "Registered. Redirecting to login...");
+      setTimeout(() => {
+        window.location.href = "/api/login";
+      }, 900);
     } else {
-      alert(body.error || "Failed to register");
+      setMsg(result.error || "Registration failed", { error: true });
     }
   } catch (err) {
-    console.error(err);
-    alert("Network error. Please try again.");
+    console.error("Registration error:", err);
+    setMsg("Network error — please try again.", { error: true });
   } finally {
     submitBtn.disabled = false;
-    submitBtn.textContent = "Submit";
+    submitBtn.textContent = "Create account";
   }
 });

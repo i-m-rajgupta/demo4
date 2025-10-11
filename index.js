@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const path = require('path');
 const fetch = require("node-fetch");
+const fetchfunc = fetch.default;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -172,26 +173,18 @@ app.get("/api/counsellor/me", authenticate, async (req, res) => {
 app.post("/api/chatbot", async (req, res) => {
   const userMessage = req.body.message;
   if (!userMessage) return res.status(400).json({ reply: "No message provided." });
-
   try {
     let botReply;
-    if (/sad|depressed|lonely/i.test(userMessage)) {
-      botReply = "I'm really sorry you're feeling sad. I'm here to listen. Can you tell me more?";
-    } else if (/anxious|stressed|nervous/i.test(userMessage)) {
-      botReply = "I understand that you're feeling anxious. Take a deep breath. Would you like some tips to manage stress?";
-    } else {
       // If you use an external service, ensure WOLFRAM_CLOUD_URL is set
+      console.log(process.env.WOLFRAM_CLOUD_URL);
       if (process.env.WOLFRAM_CLOUD_URL) {
-        const wolframResponse = await fetch(process.env.WOLFRAM_CLOUD_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: userMessage })
-        });
+        const wolframResponse = await fetchfunc(`${process.env.WOLFRAM_CLOUD_URL}?message=${userMessage}`);
+        console.log(wolframResponse);
         botReply = await wolframResponse.text();
+         console.log(botReply);
       } else {
         botReply = "Thanks for your message. I'm here to help — tell me more.";
       }
-    }
 
     res.json({ reply: botReply });
   } catch (err) {
@@ -207,6 +200,111 @@ app.get("/api/user/test", (req, res) => res.sendFile(path.join(__dirname, 'front
 app.get("/api/user/report", (req, res) => res.sendFile(path.join(__dirname, 'frontend', 'report.html')));
 app.get("/api/role", (req, res) => res.sendFile(path.join(__dirname, 'frontend', 'role.html')));
 app.get("/api/chatbot", (req, res) => res.sendFile(path.join(__dirname, 'frontend', 'chatbot.html')));
+
+// -------------------- SEARCH (public) --------------------
+// GET /api/search?q=term&limit=10&type=counsellor
+app.get('/api/search', async (req, res) => {
+  try {
+    const q = (req.query.q || '').trim();
+    if (!q) return res.json([]); // keep front-end behavior simple
+
+    const rawLimit = parseInt(req.query.limit || '10', 10);
+    const limit = Number.isNaN(rawLimit) ? 10 : Math.max(1, Math.min(50, rawLimit));
+
+    // Optional type filter (if you want to filter different collections later)
+    const typeFilter = req.query.type ? String(req.query.type).trim().toLowerCase() : null;
+
+    // Fields to project (do NOT expose password)
+    const project = {
+      password: 0,
+      __v: 0
+    };
+
+    // Try to detect whether a text index exists; if yes use $text for relevance scoring
+    let indexes = [];
+    try {
+      indexes = await Counsellor.collection.indexes();
+    } catch (idxErr) {
+      // ignore - some drivers/environments may restrict listIndexes, we'll fallback to regex
+      console.warn('[search] index list error (ignoring):', idxErr.message);
+    }
+
+    const hasTextIndex = indexes.some(ix => {
+      // index.key can be object like { name: 'text', title: 'text', ... }
+      const keys = Object.keys(ix.key || {});
+      return keys.some(k => ix.key[k] === 'text' || ix.name?.toLowerCase().includes('text'));
+    });
+
+    let results = [];
+
+    if (hasTextIndex) {
+      // Use text search for better relevance if user created a text index on counsellors
+      // Example index creation (run once): db.counsellors.createIndex({ name: "text", title: "text", qualification: "text", subtitle: "text", place: "text" })
+      const textQuery = { $text: { $search: q } };
+      if (typeFilter) {
+        // if you plan to add a 'type' field to counsellors, you can filter here
+        textQuery.type = typeFilter;
+      }
+
+      results = await Counsellor.find(textQuery, { score: { $meta: "textScore" }, ...project })
+        .sort({ score: { $meta: "textScore" } })
+        .limit(limit)
+        .lean();
+    } else {
+      // Fallback: case-insensitive regex search across several fields
+      const regex = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'); // escape user input
+      const orClauses = [
+        { name: regex },
+        { title: regex },
+        { qualification: regex },
+        { subtitle: regex },
+        { place: regex }
+      ];
+
+      // If you later add tags or specialties, include them here
+      const match = { $or: orClauses };
+      if (typeFilter) {
+        match.type = typeFilter;
+      }
+
+      results = await Counsellor.find(match, project)
+        .limit(limit)
+        .lean();
+      
+      // Basic heuristic: move exact prefix matches toward top
+      results.sort((a, b) => {
+        const score = (item) => {
+          const hay = (item.name || '') + ' ' + (item.title || '') + ' ' + (item.qualification || '');
+          const low = String(hay).toLowerCase();
+          if (low.startsWith(q.toLowerCase())) return 10;
+          if (low.includes(' ' + q.toLowerCase() + ' ')) return 6;
+          if (low.includes(q.toLowerCase())) return 3;
+          return 0;
+        };
+        return score(b) - score(a);
+      });
+    }
+
+    // Shape response: keep only fields the front-end needs
+    const shaped = results.map(r => ({
+      id: r._id,
+      name: r.name,
+      title: r.title,
+      qualification: r.qualification || r.qual || null,
+      subtitle: r.subtitle || null,
+      place: r.place || null,
+      phone: r.phone || null,
+      email: r.email ? (process.env.NODE_ENV === 'production' ? undefined : r.email) : undefined, // optionally hide email in production
+      // include any other non-sensitive fields you want
+    }));
+
+    return res.json(shaped);
+  } catch (err) {
+    console.error('/api/search error:', err);
+    return res.status(500).json({ success: false, error: 'Search failed' });
+  }
+});
+
 
 // -------------------- SERVER --------------------
 // const PORT = process.env.PORT || 8080;

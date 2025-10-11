@@ -1,45 +1,36 @@
-/* User Register Styles - Modern, Responsive */
+/* Counselor register styles - modern, responsive */
 
 /* Reset and base */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Inter", "Segoe UI", Arial, sans-serif;
-}
-html, body {
-  height: 100%;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html,body { height: 100%; font-family: "Inter", "Segoe UI", Arial, sans-serif; }
 
-/* Background with soft animated gradient */
+/* background with soft animated gradient */
 .page-bg {
   position: fixed;
   inset: 0;
-  background: linear-gradient(120deg, #d7f7f2 0%, #f6ecd9 40%, #e6d4f0 70%);
+  background: linear-gradient(120deg,#d7f7f2 0%,#f6ecd9 40%,#e6d4f0 70%);
   background-size: 200% 200%;
   animation: bgShift 14s ease-in-out infinite;
   z-index: -1;
   filter: saturate(1.03);
 }
 @keyframes bgShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
 }
 
-/* Registration Card */
+/* card */
 .form-container {
   width: 720px;
   max-width: calc(100% - 32px);
   margin: 48px auto;
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(255,255,255,0.94);
   border-radius: 14px;
   padding: 26px;
   box-shadow: 0 20px 60px rgba(9, 30, 45, 0.12);
-  border: 1px solid rgba(10, 20, 30, 0.04);
+  border: 1px solid rgba(10,20,30,0.04);
 }
 
-/* Heading */
+/* heading */
 .form-container h2 {
   font-size: 1.35rem;
   color: #072033;
@@ -47,7 +38,7 @@ html, body {
   text-align: left;
 }
 
-/* Two-column layout for some fields */
+/* two-column layout for some fields */
 .two-col {
   display: flex;
   gap: 12px;
@@ -67,7 +58,7 @@ html, body {
 .field input {
   padding: 10px 12px;
   border-radius: 10px;
-  border: 1px solid rgba(11, 37, 64, 0.08);
+  border: 1px solid rgba(11,37,64,0.08);
   background: linear-gradient(180deg, #fff, #fbfbfb);
   font-size: 0.98rem;
   color: #072033;
@@ -75,12 +66,12 @@ html, body {
   transition: box-shadow .15s ease, border-color .12s ease, transform .08s ease;
 }
 .field input:focus {
-  border-color: rgba(76, 199, 99, 0.9);
-  box-shadow: 0 8px 18px rgba(76, 199, 99, 0.06);
+  border-color: rgba(76,199,99,0.9);
+  box-shadow: 0 8px 18px rgba(76,199,99,0.06);
   transform: translateY(-1px);
 }
 
-/* Actions Row */
+/* actions row */
 .actions {
   display: flex;
   gap: 12px;
@@ -91,46 +82,32 @@ html, body {
   padding: 12px 16px;
   border-radius: 10px;
   border: none;
-  background: linear-gradient(90deg, #4cc763 0%, #2ea86b 100%);
+  background: linear-gradient(90deg,#4cc763 0%, #2ea86b 100%);
   color: #052225;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgba(44, 160, 88, 0.12);
+  box-shadow: 0 10px 24px rgba(44,160,88,0.12);
   transition: transform .12s ease, box-shadow .12s ease;
 }
-#submitBtn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 16px 30px rgba(44, 160, 88, 0.14);
-}
-
-/* Link */
+#submitBtn:hover { transform: translateY(-3px); box-shadow: 0 16px 30px rgba(44,160,88,0.14); }
 .link {
   margin-left: auto;
   color: #114047;
   text-decoration: none;
   font-weight: 600;
 }
-.link:hover {
-  text-decoration: underline;
-}
+.link:hover { text-decoration: underline; }
 
-/* Message Area */
+/* message area */
 .form-msg {
   margin-top: 12px;
   font-size: 0.95rem;
   color: #074033;
 }
 
-/* Responsive */
+/* responsive */
 @media (max-width: 720px) {
-  .form-container {
-    padding: 20px;
-    margin: 28px;
-  }
-  .two-col {
-    flex-direction: column;
-  }
-  .link {
-    margin-left: 0;
-  }
+  .form-container { padding: 20px; margin: 28px; }
+  .two-col { flex-direction: column; }
+  .link { margin-left: 0; }
 }

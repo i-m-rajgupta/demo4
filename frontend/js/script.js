@@ -171,3 +171,25 @@ document.addEventListener('DOMContentLoaded', () => {
   updateAuthUI();
   animateElements();
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const searchInput = document.getElementById("search");
+
+  searchInput.addEventListener("input", async () => {
+    const query = searchInput.value.trim();
+    if (!query) return;
+
+    try {
+      const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+      const data = await res.json();
+
+      console.log("Search Results:", data); // You can replace this with UI display
+
+      // Optional: Display results in a dropdown or a div
+      // showSearchResults(data);
+    } catch (err) {
+      console.error("Search failed:", err);
+    }
+  });
+});
+

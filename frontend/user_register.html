@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,51 +8,53 @@
   <link rel="stylesheet" href="/css/user_register.css">
 </head>
 <body>
- <div class="form-container">
-  <h2>User Registration</h2>
-  <form>
-    <div class="two-col">
-      <div class="field">
-        <label for="fullName">Full Name</label>
-        <input type="text" id="fullName" placeholder="Enter your full name">
-      </div>
-      <div class="field">
-        <label for="dob">Date of Birth</label>
-        <input type="date" id="dob">
-      </div>
-    </div>
+    <div class="page-bg"></div>
+  <main class="form-container">
+    <h2>User Registration</h2>
 
-    <div class="two-col">
+    <form id="counsellorForm" autocomplete="on" novalidate>
+      <div class="two-col">
+        <div class="field">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" placeholder="Enter your full name" required />
+        </div>
+
+        <div class="field">
+          <label for="dob">Date of Birth</label>
+          <input type="date" id="dob" required />
+        </div>
+      </div>
+
       <div class="field">
         <label for="email">Email ID</label>
-        <input type="email" id="email" placeholder="Enter your email">
+        <input type="email" id="email" placeholder="you@example.com" required />
       </div>
+
       <div class="field">
         <label for="phone">Phone Number</label>
-        <input type="text" id="phone" placeholder="Enter your phone number">
+        <input type="tel" id="phone" placeholder="9876543210" required />
       </div>
-    </div>
 
-    <div class="field">
-      <label for="place">Place</label>
-      <input type="text" id="place" placeholder="Enter your place or city">
-    </div>
+        <div class="field">
+          <label for="place">City / Location</label>
+          <input type="text" id="place" placeholder="Mumbai" />
+        </div>
+      </div>
 
-    <div class="field">
-      <label for="password">Password</label>
-      <input type="password" id="password" placeholder="Enter your password">
-    </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Choose a secure password" required />
+      </div>
 
-    <div class="actions">
-      <button type="submit" id="submitBtn">Submit</button>
-    </div>
+      <div class="actions">
+        <button type="submit" id="submitBtn">Create account</button>
+        <a class="link" href="/api/login">Already registered? Login</a>
+      </div>
 
-    <div class="form-msg"></div>
-  </form>
-</div>
+      <div id="formMsg" role="status" aria-live="polite" class="form-msg"></div>
+    </form>
+  </main>
 
-
-   
   <script src="/js/user_register.js"></script>
 </body>
 </html>
