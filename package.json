@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "startCommand": "node server.js",
-    "start": "node server",
+    "start": "node server.js",
     "vercel-start": "node server.js",
     "dev": "nodemon server.js"
   },
